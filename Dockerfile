@@ -74,15 +74,15 @@ RUN apk add --no-cache \
   make
 
 # java
-RUN apk add --no-cache \
-  openjdk11-jdk
+#RUN apk add --no-cache \
+#  openjdk11-jdk
 
 # golang
-RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
-  go
+#RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
+#  go
 
 # rust
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+#RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 # filesystem
 RUN apk add --no-cache \
@@ -114,8 +114,8 @@ RUN apk add --no-cache \
   neofetch
 
 # image viewer
-RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
-  nomacs
+#RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
+#  nomacs
 
 # update configs
 COPY .bashrc .vimrc /root/
@@ -129,7 +129,7 @@ WORKDIR /root
 RUN set -x \
 && apk update \
 && apk upgrade \
-&& apk add bash bash-completion mksh lxterminal libc6-compat
+&& apk add --no-cache bash bash-completion mksh lxterminal libc6-compat git
 
 RUN set -x \
 && cd / \
