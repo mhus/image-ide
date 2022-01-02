@@ -1,4 +1,4 @@
-FROM debian:bookworm
+FROM debian:bullseye
 
 LABEL AUTHOR Mike Hummel <mh@mhus.de>
 
@@ -23,14 +23,14 @@ unzip \
 git \
 ca-certificates
 
-RUN set -x \
-&& cd / \
-&& wget -O openjdk.tar.gz https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.13%2B8/OpenJDK11U-jdk_x64_alpine-linux_hotspot_11.0.13_8.tar.gz \
-&& cd /usr/local \
-&& tar xzvf /openjdk.tar.gz \
-&& ln -s /usr/local/jdk-11.0.13+8 /usr/local/java \
-&& echo "export PATH=/usr/local/java/bin:\$PATH" > /etc/profile.d/java.sh \
-&& echo "export JAVA_HOME=/usr/local/java" >> /etc/profile.d/java.sh
+#RUN set -x \
+#&& cd / \
+#&& wget -O openjdk.tar.gz https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.13%2B8/OpenJDK11U-jdk_x64_alpine-linux_hotspot_11.0.13_8.tar.gz \
+#&& cd /usr/local \
+#&& tar xzvf /openjdk.tar.gz \
+#&& ln -s /usr/local/jdk-11.0.13+8 /usr/local/java \
+#&& echo "export PATH=/usr/local/java/bin:\$PATH" > /etc/profile.d/java.sh \
+#&& echo "export JAVA_HOME=/usr/local/java" >> /etc/profile.d/java.sh
 
 RUN set -x \
 && cd / \
@@ -89,3 +89,17 @@ novnc.pem \
 -subj "/C=UK/ST=Warwickshire/L=Leamington/O=OrgName/OU=IT Department/CN=example.com"
 
 CMD ["supervisord", "-c", "/etc/supervisord.conf", "-n"]
+
+RUN set -x \
+&& apt-get -y --no-install-recommends install \
+ firefox-esr 
+
+RUN set -x \
+&& wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg \
+&& install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/ \
+&& sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list' \
+&& rm -f packages.microsoft.gpg \
+&& apt install apt-transport-https \
+&& apt update \
+&& apt install code 
+
