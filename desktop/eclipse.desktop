@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Eclipse
+Comment=
+Exec=/usr/local/eclipse/eclipse
+Icon=
+Path=/usr/local/eclipse
+Terminal=true
+StartupNotify=false

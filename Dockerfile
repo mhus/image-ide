@@ -49,7 +49,8 @@ xfonts-base \
 lwm \
 xterm \
 xdotool \
-tigervnc-viewer
+tigervnc-viewer \
+sudo
 
 ENV DISPLAY :1
 ENV RESOLUTION 1024x768x16
@@ -76,8 +77,6 @@ novnc.pem \
 -days 3650 \
 -subj "/C=UK/ST=Warwickshire/L=Leamington/O=OrgName/OU=IT Department/CN=example.com"
 
-CMD ["supervisord", "-c", "/etc/supervisord.conf", "-n"]
-
 RUN set -x \
 && apt-get -y --no-install-recommends install \
  firefox-esr 
@@ -91,20 +90,27 @@ RUN set -x \
 && apt update \
 && apt -y --no-install-recommends install code 
 
+RUN set -x \
+&& adduser --disabled-password -uid 1000  user \
+&& su - user -c "mkdir /home/user/Desktop"
+
 COPY supervisor /tmp
 COPY novnc_server /usr/bin/
+COPY desktop /home/user/Desktop
+COPY startup.sh /urs/local/
+COPY usersudo.conf /etc/sudoers.d/
 SHELL ["/bin/bash", "-c"]
+#CMD ["supervisord", "-c", "/etc/supervisord.conf", "-n"]
+CMD ["/usr/local/startup.sh"]
 
 RUN set -x \
+&& chmod +x /usr/local/startup.sh \
 && echo_supervisord_conf > /etc/supervisord.conf \
 &&  sed -i -r -f /tmp/supervisor.sed /etc/supervisord.conf \
 &&  mkdir -pv /etc/supervisor/conf.d /var/log/{novnc,x11vnc,xfce4,xvfb} \
 &&  mv /tmp/supervisor-*.ini /etc/supervisor/conf.d/ \
 &&  chmod +x /usr/bin/novnc_server \
-&&  rm -fr /tmp/supervisor*
-
-RUN set -x \
-&& adduser --disabled-password -uid 1000  user \
+&&  rm -fr /tmp/supervisor* \
 && su - user -c "mkdir /home/user/.vnc" \
 && su - user -c "touch /home/user/.vnc/passwd" \
 && su - user -c "x11vnc -storepasswd test /home/user/.vnc/passwd"
