@@ -103,3 +103,8 @@ RUN set -x \
 && apt update \
 && apt -y --no-install-recommends install code 
 
+RUN set -x \
+&& adduser --disabled-password -uid 1000  user \
+&& su - user -c "mkdir /home/user/.vnc" \
+&& su - user -c "touch /home/user/.vnc/passwd" \
+&& su - user -c "x11vnc -storepasswd test /home/user/.vnc/passwd"
