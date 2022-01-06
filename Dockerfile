@@ -64,18 +64,6 @@ RUN set -x \
   novnc \
   dbus-x11
 
-COPY supervisor /tmp
-COPY novnc_server /usr/bin/
-SHELL ["/bin/bash", "-c"]
-
-RUN set -x \
-&& echo_supervisord_conf > /etc/supervisord.conf \
-&&  sed -i -r -f /tmp/supervisor.sed /etc/supervisord.conf \
-&&  mkdir -pv /etc/supervisor/conf.d /var/log/{novnc,x11vnc,xfce4,xvfb} \
-&&  mv /tmp/supervisor-*.ini /etc/supervisor/conf.d/ \
-&&  chmod +x /usr/bin/novnc_server \
-&&  rm -fr /tmp/supervisor*
-
 RUN set -x \
 cd /etc \
 openssl \
@@ -102,6 +90,18 @@ RUN set -x \
 && apt -y --no-install-recommends install apt-transport-https \
 && apt update \
 && apt -y --no-install-recommends install code 
+
+COPY supervisor /tmp
+COPY novnc_server /usr/bin/
+SHELL ["/bin/bash", "-c"]
+
+RUN set -x \
+&& echo_supervisord_conf > /etc/supervisord.conf \
+&&  sed -i -r -f /tmp/supervisor.sed /etc/supervisord.conf \
+&&  mkdir -pv /etc/supervisor/conf.d /var/log/{novnc,x11vnc,xfce4,xvfb} \
+&&  mv /tmp/supervisor-*.ini /etc/supervisor/conf.d/ \
+&&  chmod +x /usr/bin/novnc_server \
+&&  rm -fr /tmp/supervisor*
 
 RUN set -x \
 && adduser --disabled-password -uid 1000  user \
