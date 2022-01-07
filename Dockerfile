@@ -97,7 +97,7 @@ RUN set -x \
 COPY supervisor /tmp
 COPY novnc_server /usr/bin/
 COPY desktop /home/user/Desktop
-COPY startup.sh /urs/local/
+COPY startup.sh /usr/local/
 COPY usersudo.conf /etc/sudoers.d/
 SHELL ["/bin/bash", "-c"]
 #CMD ["supervisord", "-c", "/etc/supervisord.conf", "-n"]
