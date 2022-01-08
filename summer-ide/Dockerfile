@@ -66,7 +66,12 @@ USER root
 
 ADD image/etc /etc
 
-RUN apt-get install -y --no-install-recommends \
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends \
     sudo
+
+RUN rm /etc/my_init.d/init-sshd.sh
+
+ENTRYPOINT ["/sbin/my_init", "--", "/sbin/setuser", "ubuntu"]
 
 WORKDIR $DOCKER_HOME
