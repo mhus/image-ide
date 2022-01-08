@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Visual Studio Code
+Comment=
+Exec=/usr/bin/code -no-sandbox
+Icon=
+Path=/home/ubuntu
+Terminal=false
+StartupNotify=false

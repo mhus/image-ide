@@ -10,6 +10,8 @@
 
 FROM x11vnc/docker-desktop:latest
 
+LABEL AUTHOR Mike Hummel <mh@mhus.de>
+
 # Install vscode and system packages
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg && \
     mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg && \
