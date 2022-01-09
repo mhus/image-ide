@@ -8,7 +8,7 @@
 # Authors:
 # Xiangmin Jiao <xmjiao@gmail.com>
 
-FROM x11vnc/docker-desktop:latest
+FROM docker-desktop:latest
 
 LABEL AUTHOR Mike Hummel <mh@mhus.de>
 
