@@ -8,57 +8,9 @@
 # Authors:
 # Xiangmin Jiao <xmjiao@gmail.com>
 
-FROM docker-desktop:latest
+FROM vscode-desktop:22.04.00
 
 LABEL AUTHOR Mike Hummel <mh@mhus.de>
-
-# Install vscode and system packages
-RUN curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg && \
-    mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg && \
-    sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list' && \
-    \
-    apt-get update && \
-    apt-get install  -y --no-install-recommends \
-        vim \
-        build-essential \
-        pkg-config \
-        gfortran \
-        cmake \
-        bison \
-        flex \
-        git \
-        bash-completion \
-        rsync \
-        wget \
-        ccache \
-        \
-        clang \
-        clang-format \
-        libboost-all-dev \
-        code \
-        enchant && \
-    apt-get install -y --no-install-recommends \
-        pandoc \
-        ttf-dejavu && \
-    apt-get clean && \
-    curl -O https://bootstrap.pypa.io/get-pip.py && \
-    python3 get-pip.py && \
-    pip3 install -U \
-        setuptools \
-	ipython && \
-    pip3 install -U \
-        autopep8 \
-        flake8 \
-        yapf \
-        black \
-        pyenchant \
-        pylint \
-        pytest \
-        Cython \
-        Sphinx \
-        sphinx_rtd_theme && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
-    chown -R $DOCKER_USER:$DOCKER_GROUP $DOCKER_HOME
 
 USER $DOCKER_USER
 ADD image/home $DOCKER_HOME
@@ -72,6 +24,6 @@ RUN apt-get update \
 
 RUN rm /etc/my_init.d/init-sshd.sh
 
-ENTRYPOINT ["/sbin/my_init", "--", "/sbin/setuser", "ubuntu"]
+#ENTRYPOINT ["/sbin/my_init", "--", "/sbin/setuser", "ubuntu"]
 
 WORKDIR $DOCKER_HOME
