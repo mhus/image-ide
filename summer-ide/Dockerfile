@@ -8,7 +8,7 @@
 # Authors:
 # Xiangmin Jiao <xmjiao@gmail.com>
 
-FROM vscode-desktop:22.04.00
+FROM x11vnc/vscode-desktop:22.04.00
 
 LABEL AUTHOR Mike Hummel <mh@mhus.de>
 
